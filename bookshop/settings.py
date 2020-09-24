@@ -26,7 +26,7 @@ SECRET_KEY = 'jngspz8cr5l!ggi6rr!mnay%bh%v!*^le8qe$9@lnve-afgfh8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["maks-sazon-one.herokuapp.com"]
+ALLOWED_HOSTS = ["maks-sazon-one.herokuapp.com", "127.0.0.1"]
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'managebook',
 ]
 
 MIDDLEWARE = [
