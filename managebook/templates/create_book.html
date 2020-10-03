@@ -1,0 +1,17 @@
+{% extends 'main_template.html' %}
+{% block add_book %}
+
+
+<form action="{% url 'add_book' %}" method="post">
+    {% csrf_token %}
+    {{ form.title.label }}
+    {{ form.title }}
+    {{ form.text.label }}
+    {{ form.text }}
+    {{ form.genre.label }}
+    <p>{{ form.genre }}</p>
+
+    <button type="submit">OK</button>
+</form>
+
+{% endblock %}
