@@ -3,6 +3,9 @@
 <a href="{% url 'add_book' %}">Add new book</a>
 {% for book in content %}
     <h1>{{ book.title }}</h1>
+<p><a href="{% url 'delete_book' book_id=book.id %}">Delete book</a></p>
+<p><a href="{% url 'update_book' book_slug=book.slug %}">Update book</a></p>
+
     <h5>{{ book.text}}</h5>
     <h5>Rate: {{ book.cached_rate}}</h5>
     {% for i in '0123456789'%}
@@ -19,8 +22,8 @@
     <h5>Authors: {% for author in book.author.all%}
         {{ author.username}}
         {%endfor%}</h5>
-    <h5>Genre: {% for author in book.genre.all%}
-        {{ author.title}}
+    <h5>Genre: {% for genre in book.genre.all%}
+        {{ genre.title}},
         {%endfor%}</h5>
     {% for c in book.comment.all%}
         <h5>comment: {{c.text}}</h5>

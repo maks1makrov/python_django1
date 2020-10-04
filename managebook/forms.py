@@ -1,4 +1,6 @@
-from django.forms import ModelForm, widgets, Textarea, TextInput
+from django.contrib.auth.forms import UserCreationForm
+from django.forms import ModelForm, widgets, Textarea, TextInput, CharField
+from django import forms
 
 from managebook.models import Book, Comment
 
@@ -20,3 +22,22 @@ class CommentForm(ModelForm):
         widgets = {
             'text': TextInput(attrs={'class': "form-control"})
         }
+
+
+class CustomUserCreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        widgets = {
+            'username': TextInput(attrs={'class': "form-control"})
+        }
+
+    password1 = forms.CharField(
+        label="Password",
+        strip=False,
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password', 'class': "form-control"}),
+    )
+    password2 = forms.CharField(
+        label="Password confirmation",
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password', 'class': "form-control"}),
+        strip=False,
+
+    )

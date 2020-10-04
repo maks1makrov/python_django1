@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from pytils.translit import slugify
 
-from managebook.forms import BookForm, CommentForm
+from managebook.forms import BookForm, CommentForm, CustomUserCreationForm
 from managebook.models import BookLike, Book, CommentLike, Comment
 from django.views import View
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -34,25 +34,14 @@ class BookView(View):
 
 class AddComment(View):
     def post(self, request, book_id):
-        new_comment = CommentForm(request.POST)
-        if new_comment.is_valid():
-            nc = new_comment.save(commit=False)
-            nc.user = request.user
-            nc.book = Book.objects.get(id=book_id)
-            nc.save()
-        response = {}
         if request.user.is_authenticated:
-            quary = Q(book_like__user_id=request.user.id)
-            sub_quary = Book.objects.filter(quary). \
-                annotate(user_rate=Cast('book_like__rate', CharField())). \
-                prefetch_related("author", "genre", "comment", "comment__user")
-            result = Book.objects.filter(~quary).annotate(user_rate=Value(-1, CharField())). \
-                prefetch_related("author", "genre", "comment", "comment__user").union(sub_quary)
-            response['content'] = result.all()
-        else:
-            response['content'] = Book.objects. \
-                prefetch_related("author", "genre", "comment", "comment__user").all()
-        return render(request, "index.html", response)
+            new_comment = CommentForm(request.POST)
+            if new_comment.is_valid():
+                nc = new_comment.save(commit=False)
+                nc.user = request.user
+                nc.book_id = book_id
+                nc.save()
+        return redirect("hello")
 
 # def hello(request):
 #     return HttpResponse("Hello world")
@@ -78,11 +67,11 @@ class AddLikeComment(View):
 
 class RegisterView(View):
     def get(self, request):
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
         return render(request, "register.html", {"form": form})
 
     def post(self, request):
-        form = UserCreationForm(data=request.POST)
+        form = CustomUserCreationForm(data=request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
@@ -129,4 +118,31 @@ class AddNewBook(View):
             book.save_m2m()
             return redirect('hello')
         return redirect('add_book')
+
+
+class DeleteBook(View):
+    def get(self, request, book_id):
+        if request.user.is_authenticated:
+            book = Book.objects.get(id=book_id)
+            if request.user in book.author.all():
+                book.delete()
+            return redirect("hello")
+
+
+class UpdateBook(View):
+    def get(self, request, book_slug):
+        if request.user.is_authenticated:
+            book = Book.objects.get(slug=book_slug)
+            if request.user in book.author.all():
+                df = BookForm(instance=book)
+                return render(request, 'update_book.html', {"form": df, "slug": book.slug})
+            return redirect("hello")
+
+    def post(self, request, book_slug):
+        book = Book.objects.get(slug=book_slug)
+        bf = BookForm(instance=book, data=request.POST)
+        if bf.is_valid():
+            bf.save()
+        return redirect("hello")
+
 

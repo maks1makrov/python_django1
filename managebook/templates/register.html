@@ -3,7 +3,7 @@
 {% for m in messages %}
 <h3 class="text-danger">{{ m }}</h3>
 {% endfor %}
-
+<a href="{% url 'social:begin' 'github' %}">github</a>
 <form action="{% url 'register' %}" method="post">
     {% csrf_token%}
     {{ form }}
