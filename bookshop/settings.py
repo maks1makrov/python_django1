@@ -26,7 +26,7 @@ SECRET_KEY = 'jngspz8cr5l!ggi6rr!mnay%bh%v!*^le8qe$9@lnve-afgfh8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["maks-sazon-one.herokuapp.com", "127.0.0.1"]
+ALLOWED_HOSTS = ["maks-sazon-one.herokuapp.com", "127.0.0.1", "maks-sazon-one.herokuapp.com"]
 
 
 # Application definition
