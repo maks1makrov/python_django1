@@ -147,10 +147,24 @@ INTERNAL_IPS = [
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'social_core.backends.github.GithubOAuth2'
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
+
 )
 
 SOCIAL_AUTH_GITHUB_KEY = '586feba19a00d3b2925b'
 SOCIAL_AUTH_GITHUB_SECRET = '89f6c353421cdafd1eb9d1e275dc6d5a94b3c32e'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '939307316809-jiaae9k2f3b2ff2gvi7tbr05999aeqv8.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '-mbWx7C3w27wDLvgMN0a9K1_'
+
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/shop/hello/'
-SOCIAL_AUTH_POSTGRES_JSONFIELD = True
+# SOCIAL_AUTH_POSTGRES_JSONFIELD = True
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'my_cache_table',
+    }
+}

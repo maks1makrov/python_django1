@@ -1,5 +1,7 @@
 from django.db.models import Avg
 from django.test import TestCase
+from django.urls import reverse
+
 from managebook.models import BookLike, Book, Comment
 from django.contrib.auth.models import User
 
@@ -25,6 +27,7 @@ class TestModel(TestCase):
         BookLike.objects.create(book=book, user=user_2, rate=6)
         self.assertEqual(book.cached_rate, 5)
 
+
     def test_comment_like(self):
         user_1 = User.objects.create(username="user_1")
         user_2 = User.objects.create(username="user_2")
@@ -35,3 +38,24 @@ class TestModel(TestCase):
         comment.save()
         like = comment.like.count()
         self.assertEqual(like, 2)
+
+
+class TestViews(TestCase):
+    def setUp(self):
+        user = User.objects.create_user(username="test Name", password='test pwd')
+        self.client.force_login(user)
+
+    def test(self):
+        url = reverse('hello')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.client.logout()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_book(self):
+        book = Book.objects.create(text='text', slug="slug")
+        url = reverse('delete_book', args=[book.id])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Book.objects.count(), 0)

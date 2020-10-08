@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
 from django.forms import ModelForm, widgets, Textarea, TextInput, CharField
 from django import forms
 
@@ -40,4 +40,13 @@ class CustomUserCreationForm(UserCreationForm):
         widget=forms.PasswordInput(attrs={'autocomplete': 'new-password', 'class': "form-control"}),
         strip=False,
 
+    )
+
+
+class CustomAuthenticationForm(AuthenticationForm):
+    username = UsernameField(widget=forms.TextInput(attrs={'autofocus': True, 'class': "form-control"}))
+    password = forms.CharField(
+        label="Password",
+        strip=False,
+        widget=forms.PasswordInput(attrs={'autocomplete': 'current-password', 'class': "form-control"}),
     )

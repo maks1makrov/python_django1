@@ -25,7 +25,7 @@ class Book(models.Model):
                              db_index=True)
     slug = models.SlugField(unique=True)
     text = models.TextField(unique=True)
-    author = models.ManyToManyField(User)
+    author = models.ManyToManyField(User, related_name="book")
     publish_date = models.DateField(auto_now_add=True)
     genre = models.ManyToManyField("managebook.Genre")
     rate = models.ManyToManyField(User, through="managebook.BookLike", related_name="rate")
@@ -38,7 +38,7 @@ class Book(models.Model):
 class Comment(models.Model):
     text = models.TextField(verbose_name="add a comment")
     date = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="пользователь")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="пользователь", related_name="comment" )
     book = models.ForeignKey(
         Book, on_delete=models.CASCADE, related_name="comment")
     like = models.ManyToManyField(User, through="CommentLike", related_name="like", blank=True, null=True)
