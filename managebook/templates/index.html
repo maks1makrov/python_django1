@@ -1,6 +1,13 @@
 {% extends 'main_template.html' %}
 {% block index %}
-<a href="{% url 'add_book' %}">Add new book</a>
+
+{% for p in count_page %}
+<a href="{% url 'hello_page' num_page=p %}">page {{ p }}</a>
+{% endfor %}<br>
+{% if user.is_authenticated %}
+    <a href="{% url 'add_book' %}">Add new book</a>
+{% endif %}
+
 {% for book in content %}
     <h1>{{ book.title }}</h1>
     {% if book.is_owner %}
@@ -9,15 +16,22 @@
     {% endif  %}
     <h5>{{ book.text}}</h5>
     <h5>Rate: {{ book.cached_rate}}</h5>
+{{book.user_rate}}
     {% for i in '0123456789'%}
-        <a href="{% url 'add_rate' rate=i book_id=book.id %}">
+<!--        <span class ="rate_like fa fa-star {% if i <= book.user_rate%} checked{% endif %}" ></span>-->
             {% if i <= book.user_rate%}
-                <span class="fa fa-star checked"></span>
+                <span class="rate_like fa fa-star checked" id="book{{ book.id }}-{{ i }}"></span>
             {% else %}
-                <span class="fa fa-star"></span>
+                <span class="rate_like fa fa-star" id="book{{ book.id }}-{{ i }}"></span>
             {% endif %}
         </a>
     {% endfor %}
+<th>
+{% for u in book.rate.all %}
+    <span>{{ u.username }}</span>
+{% endfor %}
+</th>
+
 <p>Date: {{book.publish_date}}</p>
 
     <p>Authors: {% for author in book.author.all%}
@@ -27,24 +41,25 @@
         {{ genre.title}},
         {%endfor%}</p>
     {% for c in book.comment.all%}
-        {{ c.is_owner}}
         <h5>comment: {{c.text}}</h5>
         <p>{{c.date}}</p>
         <p>{{c.user}}</p>
-        <i>likes: {{c.cached_like}}</i>
+        <span class="comment_like fa {% if c.is_liked %}fa-star checked{% endif%}" id="cl-{{ c.id }}">
+            likes: {{c.cached_like}}</span>
         <i>
             {% for u in c.like.all %}
-            <span>{{ u }}</span>
+            <span class="col">{{ u }}</span>
             {% endfor %}
         </i>
 
-        <a href="{% url 'add_like' comment_id=c.id %}"><i>add like for this comment</i></a>
+
         <br>
-        {% if c.is_owner %}
+        {% if c.is_owner%}
         <a href="{% url 'delete_comment' comment_id=c.id %}">Delete this comment</a>
         <a href="{% url 'update_comment' comment_id=c.id %}">Update this comment</a>
         <br><br>
-        {%  endif %}
+        {% endif %}
+
 
 
     {% endfor %}

@@ -38,7 +38,7 @@ class Book(models.Model):
 class Comment(models.Model):
     text = models.TextField(verbose_name="add a comment")
     date = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="пользователь", related_name="comment" )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="пользователь", related_name="comment")
     book = models.ForeignKey(
         Book, on_delete=models.CASCADE, related_name="comment")
     like = models.ManyToManyField(User, through="CommentLike", related_name="like", blank=True, null=True)
@@ -57,8 +57,12 @@ class CommentLike(models.Model):
             super().save(*args, **kwargs)
         except IntegrityError:
             CommentLike.objects.get(comment_id=self.comment.id, user_id=self.user.id).delete()
+            flag = False
+        else:
+            flag = True
         self.comment.cached_like = self.comment.comment_like.count()
         self.comment.save()
+        return flag
 
 
 class BookLike(models.Model):
