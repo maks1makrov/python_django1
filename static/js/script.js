@@ -44,6 +44,81 @@ $("document").ready(function(){
     console.log('hello click')
     });
 
+    $('span.book_rate').on("click", function(){
+        let arr = $(this).attr("id").split("-");
+        let book_id = arr[1];
+        let book_rate = arr[2];
+        let obj = this
+        $.ajax({
+            url:'/shop/add_book_rate_ajax/',
+            data: {"book_id": book_id,"book_rate": book_rate, 'csrfmiddlewaretoken': csrftoken},
+            method: "post",
+            success: function(data){
+                let rate = $(obj).parent()
+                let children = $(rate).children()
+                let text = children[0]
+                $(text).html(`Rate: ${data['cached_rate']}`);
+                for(let i=1; i <= 10; i++){
+                    if(data["rate"] >= i-1){
+                        $(children[i]).attr('class', 'book_rate fa fa-star checked')
+                    }else{
+                        $(children[i]).attr('class', 'book_rate fa fa-star')
+                    }
+
+                }
+                if(data['flag']){
+                    $(rate).append(`<span>${data['user']}</span>`)
+                }
+            console.log(data, text)
+            }
+
+
+        })
+    })
+
+    $('button.delete_comment').on("click", function(){
+        let id = $(this).attr('id').split("-")[1];
+        let obj = this
+        $.ajax({
+            url:`/shop/delete_comment_ajax/$("id")`,
+            data: {"comment_id": id, 'csrfmiddlewaretoken': csrftoken},
+            method: "delete",
+            success: function(data){
+                $(this).remove()
+            }
+
+            }
+
+        )}
+
+    $("a.add_new_book").on(click, function(){
+        let arr = $(this).parent().children()
+        let title = $(arr[0]).val();
+        let text = $(arr[1]).val();
+        let genre = $(arr[4]).val();
+        $('modal').modal('toggle')
+        let close = $(this).parent().parent().children()[1]
+        $.ajax({
+        url:'/shop/add_new_book_ajax',
+            data: {
+            'csrfmiddlewaretoken': csrftoken,
+            'title': title,
+            'text': text,
+            "genre": genre,
+
+            },
+            method: "post",
+            success: function(data)
+
+        )}
+        console.log(title, text, selector)
+    }
+
+    )}
+
+
+
+
 });
 
 

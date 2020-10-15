@@ -63,6 +63,7 @@ class BookView(View):
         pag = Paginator(result, 3)
         response['content'] = pag.page(num_page)
         response['count_page'] = list(range(1, pag.num_pages + 1))
+        response['bookform'] = BookForm()
         return render(request, "index.html", response)
 
 
@@ -243,15 +244,25 @@ class AddLikeAjax(View):
         return JsonResponse({"ok": False})
 
 
-# class AddRateAjax(View):
-#     def post(self, request):
-#         if request.user.is_authenticated:
-#             r_id = request.POST['r_id'][3:]
-#             flag = CommentLike(user=request.user, comment_id=cl_id).save()
-#             comment = Comment.objects.get(id=cl_id)
-#             return JsonResponse({"ok": True,
-#                                  'count_like': comment.cached_like,
-#                                  'flag': flag,
-#                                  'user': request.user.username
-#                                  })
-#         return JsonResponse({"ok": False})
+class AddRateAjax(View):
+    def post(self, request):
+        if request.user.is_authenticated:
+            book_id = request.POST['book_id']
+            rate = request.POST['book_rate']
+            bl = BookLike(user=request.user, book_id=book_id, rate=rate)
+            flag = bl.save()
+            bl.book.refresh_from_db()
+            return JsonResponse({'user': request.user.username, "flag": flag, 'cached_rate': bl.book.cached_rate, 'rate': bl.rate })
+        return JsonResponse({"ok": False})
+
+
+class DeleteCommentAjax(View):
+    def delete(self, request, comment_id):
+        if request.user.is_authenticated:
+            Comment.objects.filter(id=comment_id, user=request.user).delete()
+        return JsonResponse({"ok": False})
+
+
+class AddNewBookAjax(View):
+    def post(self):
+        pass
