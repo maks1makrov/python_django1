@@ -16,6 +16,7 @@ function getCookie(name) {
 const csrftoken = getCookie('csrftoken');
 
 $("document").ready(function(){
+
     $('span.comment_like').on("click", function(){
         let cl_id = $(this).attr("id");
         let object_comment = this
@@ -74,52 +75,52 @@ $("document").ready(function(){
 
 
         })
-    })
+    });
 
-    $('button.delete_comment').on("click", function(){
-        let id = $(this).attr('id').split("-")[1];
-        let obj = this
+    $("button.delete_comment").on("click", function () {
+        let id = $(this).attr('id').split('-')[1];
+        let obj = this;
+        console.log(id)
         $.ajax({
-            url:`/shop/delete_comment_ajax/$("id")`,
-            data: {"comment_id": id, 'csrfmiddlewaretoken': csrftoken},
-            method: "delete",
-            success: function(data){
-                $(this).remove()
+            url: `/shop/delete_comment_ajax/${id}`,
+            method: 'delete',
+            headers: {"X-CSRFToken": csrftoken},
+            success: function (data) {
+                $(obj).parent().remove();
+                console.log(data)
             }
-
-            }
-
-        )}
-
-    $("a.add_new_book").on(click, function(){
-        let arr = $(this).parent().children()
-        let title = $(arr[0]).val();
-        let text = $(arr[1]).val();
-        let genre = $(arr[4]).val();
-        $('modal').modal('toggle')
-        let close = $(this).parent().parent().children()[1]
-        $.ajax({
-        url:'/shop/add_new_book_ajax',
-            data: {
-            'csrfmiddlewaretoken': csrftoken,
-            'title': title,
-            'text': text,
-            "genre": genre,
-
-            },
-            method: "post",
-            success: function(data)
-
-        )}
-        console.log(title, text, selector)
-    }
-
-    )}
-
-
-
-
+        })
+    });
 });
+//    $("a.add_new_book").on(click, function(){
+//        let arr = $(this).parent().children()
+//        let title = $(arr[0]).val();
+//        let text = $(arr[1]).val();
+//        let genre = $(arr[4]).val();
+//        $('modal').modal('toggle')
+//        let close = $(this).parent().parent().children()[1]
+//        $.ajax({
+//        url:'/shop/add_new_book_ajax',
+//            data: {
+//            'csrfmiddlewaretoken': csrftoken,
+//            'title': title,
+//            'text': text,
+//            "genre": genre,
+//
+//            },
+//            method: "post",
+//            success: function(data)
+//
+//        )}
+//        console.log(title, text, selector)
+//    }
+//
+//    )}
+//
+//
+
+
+//});
 
 
 //$('document').ready(function(){

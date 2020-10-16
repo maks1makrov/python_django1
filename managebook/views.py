@@ -260,7 +260,7 @@ class DeleteCommentAjax(View):
     def delete(self, request, comment_id):
         if request.user.is_authenticated:
             Comment.objects.filter(id=comment_id, user=request.user).delete()
-        return JsonResponse({"ok": False})
+        return JsonResponse({"ok": True})
 
 
 class AddNewBookAjax(View):
