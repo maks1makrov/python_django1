@@ -1,0 +1,8 @@
+.blue{
+    color: blue;
+}
+
+.auth .comment_like:hover{
+    color: blue;
+    cursor: pointer;
+}

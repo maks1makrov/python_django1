@@ -65,8 +65,8 @@
         <h6>comment: {{c.text}}</h6>
         <h6>{{c.date}}</h6>
         <h6>comment`s author: {{c.user}}</h6>
-        <a href="#"><span class="comment_like fa {% if c.is_liked %}fa-star checked{% endif%}" id="cl-{{ c.id }}">
-            likes: {{c.cached_like}}</span></a>
+        <span class="comment_like fa {% if c.is_liked %}fa-star checked{% endif%}" id="cl-{{ c.id }}">
+            likes: {{c.cached_like}}</span>
         <i>This comment liked:
             {% for u in c.like.all %}
             <span class="col">{{ u }}</span>

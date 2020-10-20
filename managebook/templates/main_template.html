@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="{% if user.is_authenticated %}auth{% endif%}">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
     <script src="{% static 'js/script.js' %}"></script>
     <style>.checked {color: orange;}</style>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 </head>
 <body>

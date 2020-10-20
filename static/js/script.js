@@ -17,7 +17,13 @@ const csrftoken = getCookie('csrftoken');
 
 $("document").ready(function(){
 
-    $('span.comment_like').on("click", function(){
+    /*$('html.auth span.comment_like').mouseenter(function(){
+        $(this).addClass('blue')
+    });
+    $('html.auth span.comment_like').mouseleave(function(){
+        $(this).removeClass('blue')
+    });*/
+    $('html.auth span.comment_like').on("click", function(){
         let cl_id = $(this).attr("id");
         let object_comment = this
         $.ajax({
