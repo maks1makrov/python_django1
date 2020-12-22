@@ -15,6 +15,23 @@ function getCookie(name) {
 }
 const csrftoken = getCookie('csrftoken');
 
+//function add_book(form){
+//    let title = form.title.value;
+//    let text = form.text.value;
+//    let arr_genre = JSON.stringify($(form.genre).val());
+//    $($(form).children()[6]).trigger('click');
+//    $.ajax({
+//        url:'/shop/add_new_book_ajax',
+//        method: 'post'
+//        data: {
+//            'csrfmiddlewaretoken': csrftoken,
+//            'title': title,
+//            'text': text,
+//            "genre": genre,}
+//
+//
+//}
+
 $("document").ready(function(){
 
     /*$('html.auth span.comment_like').mouseenter(function(){
@@ -48,7 +65,7 @@ $("document").ready(function(){
                 console.log(data)
             }
         });
-    console.log('hello click')
+//    console.log('hello click')
     });
 
     $('span.book_rate').on("click", function(){

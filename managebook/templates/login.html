@@ -5,6 +5,8 @@
 {% endfor%}
 <i>Войти с помощью:</i>
 <a href="{% url 'social:begin' 'github' %}">github</a><br><br>
+<a href="{% url 'social:begin' 'google-oauth2' %}">Google+</a>
+<a href="{% url 'social:begin' 'linkedin-oauth2' %}">linkedin</a>
 <form action="{% url 'login' %}" method="post">
     {% csrf_token %}
     {{ form.username.label }}<br>

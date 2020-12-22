@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social_django',
-    'debug_toolbar',
+     # 'debug_toolbar',
     'managebook',
 ]
 
@@ -51,8 +51,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware'
+     # 'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware'
 ]
 
 ROOT_URLCONF = 'bookshop.urls'
@@ -80,28 +80,29 @@ WSGI_APPLICATION = 'bookshop.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 #
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'django_base_book',
-        'USER': 'book_user',
-        'PASSWORD': 'password',
-        'HOST': '127.0.0.1',
-        'PORT': 5432
-    }
-}
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': os.environ.get('NAME'),
-#         'USER': os.environ.get('USER'),
-#         'PASSWORD': os.environ.get('PASSWORD'),
-#         'HOST': os.environ.get('HOST'),
+#         'NAME': 'django_base_book',
+#         'USER': 'book_user',
+#         'PASSWORD': 'password',
+#         'HOST': '127.0.0.1',
 #         'PORT': 5432
 #     }
 # }
 
-SOCIAL_AUTH_POSTGRES_JSONFIELD = True
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('NAME'),
+        'USER': os.environ.get('USER'),
+        'PASSWORD': os.environ.get('PASSWORD'),
+        'HOST': os.environ.get('HOST'),
+        'PORT': 5432
+    }
+}
+
+# SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 
 # DATABASES = {
 #     'default': {
@@ -152,7 +153,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 INTERNAL_IPS = [
     '127.0.0.1',
@@ -162,6 +163,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'social_core.backends.github.GithubOAuth2',
     'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.linkedin.LinkedinOAuth2',
 
 )
 
@@ -170,6 +172,18 @@ SOCIAL_AUTH_GITHUB_SECRET = '89f6c353421cdafd1eb9d1e275dc6d5a94b3c32e'
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '939307316809-jiaae9k2f3b2ff2gvi7tbr05999aeqv8.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '-mbWx7C3w27wDLvgMN0a9K1_'
+
+SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = '78ha38554llwnx'
+SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = 'e0KsHz4Vnhm40vTE'
+SOCIAL_AUTH_LINKEDIN_OAUTH2_SCOPE = ['r_basicprofile', 'r_emailaddress']
+SOCIAL_AUTH_LINKEDIN_OAUTH2_FIELD_SELECTORS = ['email-address', 'formatted-name', 'public-profile-url', 'picture-url']
+SOCIAL_AUTH_LINKEDIN_OAUTH2_EXTRA_DATA = [
+    ('id', 'id'),
+    ('formattedName', 'name'),
+    ('emailAddress', 'email_address'),
+    ('pictureUrl', 'picture_url'),
+    ('publicProfileUrl', 'profile_url'),
+]
 
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/shop/hello/'
 

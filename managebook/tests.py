@@ -1,9 +1,13 @@
+from time import sleep
+
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.db.models import Avg
 from django.test import TestCase
 from django.urls import reverse
 
 from managebook.models import BookLike, Book, Comment, Genre
 from django.contrib.auth.models import User
+from selenium.webdriver import Chrome
 
 
 class TestModel(TestCase):
@@ -141,3 +145,9 @@ class TestViews(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Comment.objects.count(), 0)
+
+# class TestBySelenium(StaticLiveServerTestCase):
+#     def test_one(self):
+#         driver = Chrome()
+#         driver.get(self.live_server_url + reverse('hello'))
+#         sleep(5)
